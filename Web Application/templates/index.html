@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor's Fees Prediction</title>
+    <!-- Include jQuery and jQuery UI libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("your_background_image_url_here");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: rgba(150, 232, 199, 0.4);
+        }
+
+        h1 {
+            color: #332222;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        form {
+            margin: 50px auto;
+            padding: 20px;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2E8B57;
+        }
+
+        h2 {
+            color: hsl(264, 66%, 16%);
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .prediction-result {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .fee-value {
+            font-size: 24px;
+            color: #4CAF50;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Doctor's Fees Prediction</h1>
+    <form method="POST" action="/predict">
+        <label for="speciality_of_doctor">Speciality of Doctor:</label>
+        <input type="text" id="speciality_of_doctor" name="speciality_of_doctor">
+
+        <label for="degree_type">Degree Type:</label>
+        <input type="text" id="degree_type" name="degree_type">
+
+        <label for="year_of_experience">Year of Experience:</label>
+        <input type="text" id="year_of_experience" name="year_of_experience">
+
+        <label for="city">City:</label>
+        <select id="city" name="city">
+            <option value="Bangalore">Bangalore</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Mumbai">Mumbai</option>
+        </select>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location">
+
+        <label for="dp_score">DP Score:</label>
+        <input type="text" id="dp_score" name="dp_score">
+
+        <label for="npv">NPV:</label>
+        <input type="text" id="npv" name="npv">
+
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        $(function () {
+			var degrees = ['BSc', 'BAMS', 'BDS', 'MDS', 'PhD', 'BHMS', 'BNYS', 'BPTh/BPT', 'MPTh/MPT', 'MSc', 'DDVL', 'DGO', 'DNB', 'MD', 'Diploma', 'MBBS', 'DDPHN', 'DDHN', 'DM', 'Doctorate', 'DOMS', 'DPM', 'FCPS', 'Fellowship', 'FRCP', 'FRCS', 'Masters', 'MCh', 'MS', 'PG', 'PGD'];
+			var specialities = ['Dietitian/Nutritionist', 'Dentist', 'Physiotherapist', 'Chiropractor', 'Dermatologist', 'Gynecologist', 'Infertility Specialist', 'Pediatrician', 'Orthopedist', 'Pulmonologist', 'Cardiologist', 'Rheumatologist', 'Gastroenterologist', 'Neurologist', 'Bariatric Surgeon', 'Urologist', 'Neurosurgeon', 'Ophthalmologist', 'Psychiatrist'];
+
+			var locations = ['Koramangala 7 Block', 'Bandra West', 'Kandivali West',
+                        'Koramangala 3 Block', 'Koramangala 5 Block', 'Basaveshwaranagar',
+                        'Vasant Kunj', 'Malleswaram', 'Malviya Nagar', 'Dwarka',
+                        'Pitampura', 'HSR Layout', 'Jayanagar 4 Block', 'Sarjapur Road',
+                        'Electronics City', 'Basavanagudi', 'Banaswadi',
+                        'JP Nagar 6 Phase', 'Mahadevapura', 'Seegehalli', 'Whitefield',
+                        'Sadashivanagar', 'Rajajinagar', 'Indiranagar', 'JP Nagar',
+                        'Horamavu', 'Jayanagar 7 Block', 'Kasturi nagar', 'Domlur',
+                        'Koramangala', 'West Of Chord Road', 'Varthur', 'Murugeshpalya',
+                        'Singasandra', 'Yelahanka', 'HAL 2nd Stage', 'Hegde Nagar',
+                        'Bannerghatta Road', 'Bellandur', 'Chandra Layout',
+                        'Vidyaranyapura', 'BTM Layout 2nd Stage', 'Hennur',
+                        'JP Nagar 5 Phase', 'Richmond Town', 'CV Raman Nagar',
+                        'Banashankari 1st Stage', 'JP Nagar 2 Phase', 'Jalahalli',
+                        'KR Puram', 'Ulsoor', 'Sahakaranagar', 'RT Nagar', 'Vijayanagar',
+                        'Kundalahalli', 'Banashankari 3rd Stage', 'Jayanagar',
+                        'Kaggadasapura', 'Wilson Garden', 'HRBR Layout', 'Yeshwanthpur',
+                        'Munnekollal', 'Hebbal', 'Jeevanbhimanagar', 'Frazer Town',
+                        'Ramamurthy Nagar', 'Upparahalli', 'Mathikere - BEL',
+                        'Thanisandra', 'Lingarajapuram', 'Marathahalli', 'Belathur',
+                        'Millers Road', 'Langford Road', 'Koramangala 4 Block', 'Harlur',
+                        'BTM Layout 1st Stage', 'Kalyan Nagar', 'T Dasarahalli',
+                        'Chamarajpet', 'Nagarbhavi', 'Bommanahalli', 'Vasanthnagar',
+                        'Koramangala 1 Block', 'Hanumanthnagar', 'Hebbal Kempapura',
+                        'JP Nagar 1 Phase', 'Jayanagar 2 Block', 'Kammana Halli',
+                        'Viveknagar', 'Nagarbhavi 2nd Stage', 'JP Nagar 7 Phase',
+                        'Brigade Road', 'Yelachenahalli', 'Bagalur', 'Begur',
+                        'RMV 2nd Stage', 'Akshaya nagar', 'Yelahanka New Town',
+                        'JP Nagar 3 Phase', 'Kanakpura Road', 'Sanjay Nagar', 'Hosur Road',
+                        'Greater Kailash Part 2', 'Punjabi Bagh', 'Chattarpur',
+                        'Mayur Vihar Ph-III', 'Sarita Vihar', 'Pusa Road',
+                        'Patel Nagar West', 'Lajpat Nagar', 'Ashok Vihar', 'CR Park',
+                        'Mukherjee Nagar', 'Karol Bagh', 'Vasant Vihar', 'Vikas Puri',
+                        'Patparganj', 'Kalkaji', 'Vijaynagar', 'Alaknanda', 'Jangpura',
+                        'Vishnu Garden', 'Katwaria Sarai', 'Kamla Nagar', 'Tilak Nagar',
+                        'Rohini Sector 18', 'Mayur Vihar Ph-II', 'Rohini', 'Saket',
+                        'Paschim Vihar', 'Dwarka Sector 7', 'Kilokri', 'South Extension 2',
+                        'Defence Colony', 'Rohini Sector 7', 'Hari Nagar',
+                        'Dwarka Sector 12', 'New Rajendra Nagar', 'Dwarka Sector 6',
+                        'Kingsway Camp', 'Panchsheel Enclave', 'Gujranwala Town',
+                        'Kirti Nagar', 'Rohini Sector 16', 'Durga Puri', 'Prashant Vihar',
+                        'Mayur Vihar', 'Kapashera', 'Munirka', 'Shalimar Bagh',
+                        'New Friends Colony', 'Rajouri Garden', 'Madangir',
+                        'Vasundhra Enclave', 'Dilshad Garden', 'Karkardooma', 'Nangloi',
+                        'Meera Bagh', 'Dwarka Sector 3', 'Okhla', 'Panchsheel Park',
+                        'Dashrath Puri', 'Model Town 1', 'Rohini Sector 24',
+                        'Safdarjung Enclave', 'Greater Kailash Part 1', 'Rohini Sector 15',
+                        'Dwarka Sector 11', 'Dwarka Sector 19', 'Greater Kailash',
+                        'RK Puram', 'Jagriti Enclave', 'Krishna Nagar', 'Janakpuri',
+                        'Sukhdev Vihar', 'Khanpur', 'Laxmi Nagar', 'Kalyan Vihar',
+                        'Uttam Nagar', 'Pandav Nagar', 'Zakir Nagar', 'Ghatkopar East',
+                        'Matunga', 'Worli', 'Chembur', 'Vileparle East', 'Borivali West',
+                        'Mulund West', 'Powai', 'Borivali East', 'Vileparle West',
+                        'Prabhadevi', 'Dahisar East', 'Chembur East', 'Goregaon West',
+                        'Versova', 'Kandivali East', 'Andheri West', 'Marol',
+                        'Cumballa Hill', 'Lower Parel', 'Santacruz West', 'Ghatkopar',
+                        'Nariman Point', 'Jacob Circle', 'Jogeshwari', 'Colaba',
+                        'Kemps Corner', 'Oshiwara', 'Umerkhadi', 'Bhandup West',
+                        'Mulund East', 'Fort', 'Malad', 'Andheri East', 'Wadala',
+                        'Mira Bhayandar', 'Mira Road', 'Lokhandwala', 'Khar West',
+                        'Tardeo', 'Peddar Road', 'Malad West', 'Goregaon East',
+                        'Dadar West', 'Dadar East', 'Cuffe Parade', 'Matunga East', 'Juhu',
+                        'Lamington Road', 'Walkeshwar', 'Chinchpokli', 'Sakinaka',
+                        'Ghatkopar West', 'Parel', 'Girgaon', 'Vidyavihar', 'Govandi',
+                        'Grant Road', 'Sion', 'Charni Road', 'Dahisar West', 'Opera House',
+                        'Nagpada', 'Bhandup', 'Khetwadi', 'Kanjurmarg', 'Kurla West',
+                        'Mahim', 'Santacruz East', 'Padmanabhanagar', 'Vikhroli West',
+                        'Old Airport Road', 'Nagawara', 'Arekere', 'Sion West',
+                        'Rajarajeshwarinagar', 'Anand Niketan', 'Old Rajendra Nagar',
+                        'Nandini Layout', 'New BEL Road', 'Koramangala 8 Block',
+                        'Bommasandra', 'Banashankari 2nd Stage', 'Jayanagar 5 Block',
+                        'Brookefield', 'Gubbalala', 'New Thippasandra', 'Dwarka Sector 23',
+                        'South Extension 1', 'Dwarka Sector 9', 'East Of Kailash',
+                        'IP Extension', 'Lal baug', 'Turner Road', 'JB Nagar',
+                        'Jayanagar 9 Block', 'Panathur', 'Kengeri', 'Jayanagar 3 Block',
+                        'Sampangiramnagar', 'Chitra Vihar', 'Mazgaon', 'Chandivali',
+                        'VV Puram', 'Sheikh Sarai', 'Mahalakshmi Layout', 'Tri Nagar',
+                        'Shahdara', 'Malabar Hill', 'Green Park', 'Moti Nagar',
+                        'HBR Layout', 'Jakkur', 'Kadugodi', 'Ramesh Nagar', 'Chanakyapuri',
+                        'Dwarka Sector 22', 'Kothanur', 'Hoodi', 'Uttarahalli',
+                        'Rohini Sector 8', 'Nizamuddin East', 'Siddapura', 'Kudlu',
+                        'AECS Layout', 'JP Nagar 8 Phase', 'Yelenahalli', 'Ashoknagar',
+                        'Preet Vihar', 'BTM Layout', 'Malleshpalya', 'Bilekahalli',
+                        'Seshadripuram', 'Model Town 2', 'Shivaji Nagar', 'DLF Newtown',
+                        'Doddanekundi', 'Tagore Garden', 'Mayur Vihar Ph-I',
+                        'Rohini Sector 3', 'Jogeshwari East', 'Mira-Bhayandar Road',
+                        'Kailash Colony', 'Kadubeesanahalli', 'Koramangala 6 Block',
+                        'Jigani', 'Kasavanahalli', 'L B Sashtrinagar', 'Shantinagar',
+                        'Sunkadakatte', 'Hulimavu', 'Nagasandra', 'Gulmohar Park',
+                        'Jamia Nagar', 'Dadar', 'Malad East', 'Andheri', 'Hajiali',
+                        'Borivali', 'Kandivali', 'Dhobi Talao', 'Peenya',
+                        'Safdarjung Development Area', 'Dasarahalli', 'Mahipalpur',
+                        'Churchgate', 'Linking Road', 'Anand Vihar', 'Patel Nagar',
+                        'Vikhroli', 'Dwarka Sector 14', 'Hauz Khas', 'Rajanukunte',
+                        'Siri Fort Road', 'Bandra', 'Ghitorni', 'Shastri Nagar',
+                        'Mehrauli', 'Connaught Place', 'Banashankari', 'Shakti Nagar',
+                        'Rohini Sector 11', 'Dwarka Sector 1', 'Chirag Delhi',
+                        'HAL 3rd Stage', 'Nana Chowk', 'Magrath Road', 'Matunga West',
+                        'Madhu Vihar', 'Model Town 3', 'Hazrat Nizamuddin', 'Naraina',
+                        'Patel Nagar East', 'Lajpat Nagar 4', 'Azadpur', 'Kurla East',
+                        'Kodichikkanahalli', 'Rana Pratap Bagh', 'Subhash Nagar',
+                        'MS Palya', 'Mumbai Central', 'Burari', 'Bali Nagar', 'MG Road',
+                        'Konanakunte', 'Bhattarahalli', 'Ashok Vihar Phase 3',
+                        'Dwarka Sector 13', 'Gunjur', 'Mahavir Enclave', 'Vishwas Nagar',
+                        'Bandra East', 'Surajmal Vihar', 'Kumara Park West',
+                        'Doddakammanahalli', 'Naraina Vihar', 'Vikhroli East', 'Neb Sarai',
+                        'Dwarka Sector 17', 'Chembur West', 'Dwarka Sector 8', 'Jasola',
+                        'Harsh Vihar', 'Kalina', 'Rohini Sector 4', 'Paschim Puri',
+                        'Sion East', 'Jogeshwari West', 'Pulikeshi Nagar',
+                        'Okhla Industrial Estate', 'Mahalaxmi', 'Ram Nagar',
+                        'Chira Bazaar', 'Vivek Vihar', 'Rohini Sector 9', 'Jhandewalan',
+                        'Marine Lines', 'BEL Layout', 'Rohini Sector 5', 'Shivalik',
+                        'Kumaraswamy Layout', 'Santacruz', 'Adarsh Nagar',
+                        'Ashok Vihar Phase 1', 'Hongasandra', 'Avalahalli',
+                        'Sarvodaya Enclave', 'Ram Vihar', 'Rohini Sector 22', 'Kurla',
+                        'Ansari Nagar', 'Bhogal', 'Tuglakabad', 'Banashankari 6th Stage',
+                        'Jayanagar 8 Block', 'Nelamangala', 'Rohini Sector 6', 'Gamdevi',
+                        'Goregaon', 'Vinayaka Nagar', 'JP Nagar 9 Phase', 'Nehru Place',
+                        'Marine Drive', 'Nirman Vihar', 'Dahisar', 'Mulund', 'Gulabi Bagh',
+                        'Uday Park', 'Yojana Vihar', 'Maharani Bagh'
+			];
+
+			$("#degree_type").autocomplete({
+				source: degrees
+			});
+
+			$("#speciality_of_doctor").autocomplete({
+				source: specialities
+			});
+
+			$("#location").autocomplete({
+				source: locations
+			
+			});
+		});</script>
+
+<h2>Predicted Doctor's Fee:</h2>
+<p class="fee-value">{{ prediction_text }}</p>
+
+</body>
+</html>
