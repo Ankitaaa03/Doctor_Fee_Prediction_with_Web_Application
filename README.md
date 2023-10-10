@@ -30,7 +30,11 @@ The problem at hand is to develop a robust machine learning model and an interac
 ## Python Files 🐍
 
 ### Data Extraction 🌐
-- The data extraction phase involves collecting raw doctor information from the online medical consultancy booking site Practo. This is achieved using the Jupyter Notebook `Scrapping code.ipynb`.
+- The data extraction phase involves collecting raw doctor information from the online medical consultancy booking site Practo, with the help of python libraries Selenium and BeautifulSoup.
+- Created an empty Pandas DataFrame with columns for doctor information, such as names, degrees, years of experience, locations, and more.
+  ![img](https://github.com/Ankitaaa03/Doctor_Fee_Prediction_with_Web_Application-main/assets/133629631/150f803b-4955-40ca-a90e-3633a50e267b)
+- Used 'for' loop to iterate through a list of cities and medical specializations, to navigate Practo's search 
+result pages, and extract doctors details and continuously append them to the DataFrame.
 
 ### Data Preprocessing 🧹
 - In the preprocessing phase, data is cleaned, missing values are handled, and exploratory data analysis is performed. The Jupyter Notebook `Preprocessing_EDA.ipynb` includes the cleaning and visualization code.
