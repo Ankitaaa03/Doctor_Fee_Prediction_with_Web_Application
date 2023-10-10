@@ -3,7 +3,8 @@
 
 This project aims to create a web interface that allows users to predict doctor consultation fees based on their input. The machine learning model was trained on a dataset obtained by scraping data from the Practo website using Selenium. With the use of Python Pandas, the scraped data was thoroughly cleaned & preprocessed for accurate predictions.
 
-![Doctor Fee Prediction](https://github.com/puneetpahadia-da/Doctor_Fee_Prediction_with_Web_Application/assets/97096168/5e7f7967-5c38-48c2-9d73-4bea1d608131)
+![img](https://github.com/Ankitaaa03/Doctor_Fee_Prediction_with_Web_Application-main/assets/133629631/ca559f37-c389-4667-a871-d9b5c8bf91e4)
+
 
 ## Project Details 🚧
 
@@ -24,7 +25,7 @@ The problem at hand is to develop a robust machine learning model and an interac
 
 ## Project Roadmap
 
-![Screenshot 2023-08-09 233443](https://github.com/puneetpahadia-da/Doctor_Fee_Prediction_with_Web_Application/assets/97096168/05fb5914-dbef-4f08-bebc-eba1569c8192)
+![img](https://github.com/Ankitaaa03/Doctor_Fee_Prediction_with_Web_Application-main/assets/133629631/abf95b60-8954-466b-97da-084538581b8e)
 
 ## Python Files 🐍
 
@@ -62,20 +63,21 @@ The problem at hand is to develop a robust machine learning model and an interac
 
 - According to the Practo dataset, Bangalore has the highest number of doctors.
 
-  ![Screenshot 2023-08-09 233443](https://github.com/puneetpahadia-da/Doctor_Fee_Prediction_with_Web_Application/assets/97096168/2379a6b6-e0d2-44e9-8d4a-82b4d3c2584f)
+  ![img](https://github.com/Ankitaaa03/Doctor_Fee_Prediction_with_Web_Application-main/assets/133629631/ca1234ba-9ce1-42f2-ad72-5983aa357687)
 
   
 - The most common degrees among doctors are MBBS, BDS, and BPTh/BPT, with the highest representation in the dataset.
 
 
-  ![Screenshot 2023-08-09 233626](https://github.com/puneetpahadia-da/Doctor_Fee_Prediction_with_Web_Application/assets/97096168/fd159758-6a33-47c6-b5b6-d60d659b582d)
+  ![img](https://github.com/Ankitaaa03/Doctor_Fee_Prediction_with_Web_Application-main/assets/133629631/c90e98f5-bb23-4013-b3ba-4a1c7ee9d4f0)
+
 
 - The dataset indicates that the three most prominent specialties among doctors are:
   - Dentist
   - Gynaecologist
   - Pediatrician
 
-![Screenshot 2023-08-09 233739](https://github.com/puneetpahadia-da/Doctor_Fee_Prediction_with_Web_Application/assets/97096168/0234c914-cf76-4da4-8556-b6362cab4710)
+![img](https://github.com/Ankitaaa03/Doctor_Fee_Prediction_with_Web_Application-main/assets/133629631/99c2bda6-2393-42ba-ada3-1fcac97e6c42)
 
  <br>
 
@@ -83,7 +85,8 @@ The problem at hand is to develop a robust machine learning model and an interac
 
 The project includes an interactive web application developed with Flask. The application allows users to input values for `speciality_of_doctor`, `degree_type`, `year_of_experience`, `Location`, `city`, `dp_score`, and `npv_` to obtain a predicted consultation fee for doctors. The machine learning model, stored as `model.pkl`, is integrated into the web application.
 
-![Web Application](https://github.com/puneetpahadia-da/Doctor_Fee_Prediction_with_Web_Application/assets/97096168/0d241b18-c909-45af-84af-0822abe2d8e7)
+![img](https://github.com/Ankitaaa03/Doctor_Fee_Prediction_with_Web_Application-main/assets/133629631/2782298b-33d6-4576-8720-690a49703234)
+
 
 ### Directory Structure for Web Application 📂
 
